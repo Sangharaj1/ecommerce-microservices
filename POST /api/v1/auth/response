@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "token": "eyJhbGciOiJIUzUxMiJ9...",
+    "type": "Bearer",
+    "username": "john_doe",
+    "email": "john@example.com",
+    "roles": ["CUSTOMER"],
+    "expiresIn": 86400
+  }
+}
