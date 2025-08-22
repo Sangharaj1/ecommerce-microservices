@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "message": "User registered successfully",
+  "data": {
+    "id": 1,
+    "username": "john_doe",
+    "email": "john@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "CUSTOMER",
+    "isActive": true,
+    "createdAt": "2024-08-19T21:27:00Z"
+  }
+}
