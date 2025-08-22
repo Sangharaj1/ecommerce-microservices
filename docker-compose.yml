@@ -1,0 +1,126 @@
+version: '3.8'
+
+services:
+  # Databases
+  mysql-auth:
+    image: mysql:8.0
+    container_name: mysql-auth
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: auth_db
+      MYSQL_USER: authuser
+      MYSQL_PASSWORD: authpass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_auth_data:/var/lib/mysql
+    networks:
+      - ecommerce-network
+
+  mysql-user:
+    image: mysql:8.0
+    container_name: mysql-user
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: user_db
+      MYSQL_USER: userservice
+      MYSQL_PASSWORD: userpass
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_user_data:/var/lib/mysql
+    networks:
+      - ecommerce-network
+
+  mysql-product:
+    image: mysql:8.0
+    container_name: mysql-product
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: product_db
+      MYSQL_USER: productuser
+      MYSQL_PASSWORD: productpass
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_product_data:/var/lib/mysql
+    networks:
+      - ecommerce-network
+
+  mysql-order:
+    image: mysql:8.0
+    container_name: mysql-order
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: order_db
+      MYSQL_USER: orderuser
+      MYSQL_PASSWORD: orderpass
+    ports:
+      - "3310:3306"
+    volumes:
+      - mysql_order_data:/var/lib/mysql
+    networks:
+      - ecommerce-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - ecommerce-network
+
+  # RabbitMQ Message Broker
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - ecommerce-network
+
+  # Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - ecommerce-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - ecommerce-network
+
+volumes:
+  mysql_auth_data:
+  mysql_user_data:
+  mysql_product_data:
+  mysql_order_data:
+  redis_data:
+  rabbitmq_data:
+  grafana_data:
+
+networks:
+  ecommerce-network:
+    driver: bridge
