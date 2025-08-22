@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "username": "john_doe",
+    "email": "john@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "phone": "+1234567890",
+    "addresses": [
+      {
+        "id": 1,
+        "streetAddress": "123 Main St",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10001",
+        "country": "USA",
+        "isDefault": true
+      }
+    ]
+  }
+}
